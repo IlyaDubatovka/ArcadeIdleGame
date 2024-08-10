@@ -1,16 +1,18 @@
+
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerDownHandler
 {
-    public Image joystickBackground; // Фон джойстика
-    public Image joystickHandle; // Перемещающаяся часть джойстика
-    public GameObject player; // Ссылка на объект, который нужно перемещать
-    public float speed = 5f; // Скорость движения персонажа
+    [SerializeField]private Image joystickBackground; // Фон джойстика
+    [SerializeField]private Image joystickHandle; // Перемещающаяся часть джойстика
+    [SerializeField]private GameObject player; // Ссылка на объект, который нужно перемещать
+    [SerializeField]private float speed = 5f; // Скорость движения персонажа
 
     private Vector2 inputDirection; // Направление движения
     private Vector2 touchPos; // Позиция касания
+    
 
     void Update()
     {
@@ -21,18 +23,27 @@ public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, I
 
     public void OnDrag(PointerEventData eventData)
     {
-        // Получаем позицию мыши относительно фона джойстика
-        touchPos = eventData.position - new Vector2(joystickBackground.rectTransform.position.x, joystickBackground.rectTransform.position.y);
+        Vector2 joystickPosition;
+        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(joystickBackground.rectTransform, eventData.position, null, out joystickPosition))
+        {
+            Vector2 joystickBackgroundCenter;
+            joystickBackgroundCenter.x = joystickBackground.rectTransform.sizeDelta.x/2;
+            joystickBackgroundCenter.y = joystickBackground.rectTransform.sizeDelta.y/2;
+            joystickPosition.x =(joystickPosition.x-joystickBackgroundCenter.x)/joystickBackgroundCenter.x;
+            joystickPosition.y =(joystickPosition.y-joystickBackgroundCenter.y)/joystickBackgroundCenter.y;
 
-        // Нормализуем направление
-        float radius = joystickBackground.rectTransform.sizeDelta.x / 2; // Радиус фона
-        inputDirection = new Vector2(touchPos.x / radius, touchPos.y / radius).normalized; // Нормализуется
+            inputDirection = new Vector2(joystickPosition.x, joystickPosition.y);
 
-        // Ограничиваем ручку в пределах фона
-        float handleX = Mathf.Clamp(touchPos.x, -radius, radius);
-        float handleY = Mathf.Clamp(touchPos.y, -radius, radius);
-        
-        joystickHandle.rectTransform.anchoredPosition = new Vector2(handleX, handleY);
+            // Нормализация вектора, если длина больше 1
+            if (inputDirection.magnitude > 1f)
+            {
+                inputDirection.Normalize();
+            }
+
+            joystickHandle.rectTransform.anchoredPosition = new Vector2(
+                inputDirection.x * (joystickBackground.rectTransform.sizeDelta.x / 2),
+                inputDirection.y * (joystickBackground.rectTransform.sizeDelta.y / 2));
+        }
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -45,14 +56,5 @@ public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, I
         inputDirection = Vector2.zero; // Останавливаем движение
         joystickHandle.rectTransform.anchoredPosition = Vector2.zero; // Возвращаем ручку в начальное положение
     }
-
-    private void OnDrawGizmos()
-    {
-        // Устанавливаем цвет Gizmos (например, красный)
-        Gizmos.color = Color.red;
-
-        // Рисуем точку в позиции touchPos относительно позиции joystickBackground
-        Vector3 gizmoPosition = joystickBackground.rectTransform.position + (Vector3)touchPos;
-        Gizmos.DrawSphere(gizmoPosition, 0.1f); // 0.1f - радиус сферы
-    }
+    
 }
