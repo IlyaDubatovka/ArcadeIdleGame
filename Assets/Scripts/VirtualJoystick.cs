@@ -29,8 +29,8 @@ public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, I
             Vector2 joystickBackgroundCenter;
             joystickBackgroundCenter.x = joystickBackground.rectTransform.sizeDelta.x/2;
             joystickBackgroundCenter.y = joystickBackground.rectTransform.sizeDelta.y/2;
-            joystickPosition.x =(joystickPosition.x-joystickBackgroundCenter.x)/joystickBackgroundCenter.x;
-            joystickPosition.y =(joystickPosition.y-joystickBackgroundCenter.y)/joystickBackgroundCenter.y;
+            joystickPosition.x =(joystickPosition.x-joystickBackgroundCenter.x)/(joystickBackgroundCenter.x);
+            joystickPosition.y =(joystickPosition.y-joystickBackgroundCenter.y)/(joystickBackgroundCenter.y);
 
             inputDirection = new Vector2(joystickPosition.x, joystickPosition.y);
 
@@ -41,8 +41,8 @@ public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, I
             }
 
             joystickHandle.rectTransform.anchoredPosition = new Vector2(
-                inputDirection.x * (joystickBackground.rectTransform.sizeDelta.x / 2),
-                inputDirection.y * (joystickBackground.rectTransform.sizeDelta.y / 2));
+                inputDirection.x * (joystickBackground.rectTransform.sizeDelta.x /4),
+                inputDirection.y * (joystickBackground.rectTransform.sizeDelta.y /4));
         }
     }
 
