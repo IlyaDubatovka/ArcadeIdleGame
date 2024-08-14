@@ -1,5 +1,6 @@
 
 using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -11,7 +12,7 @@ public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, I
     [SerializeField]private Transform playerTransform; // Ссылка на объект, который нужно перемещать
     [SerializeField]private float speed = 5f; // Скорость движения персонажа
     [SerializeField] private float _rotateSpeed = 5f;
-
+    public bool isMoving = false;
     private Vector2 inputDirection; // Направление движения
     private Vector2 touchPos; // Позиция касания
     
@@ -20,6 +21,7 @@ public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, I
     {
         // Перемещение игрока на основе ввода джойстика
         Vector3 movement = new Vector3(inputDirection.x, 0.0f, inputDirection.y);
+        isMoving = movement.magnitude > 0 ;
         playerTransform.Translate(movement * speed * Time.deltaTime, Space.World);
         if (Vector3.Angle(playerTransform.forward,inputDirection)>0)
         {

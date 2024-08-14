@@ -333,6 +333,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 127068565}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &140063901 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1179832716302079356, guid: 28bcb1907b6384d4da1a6e31b9d269be, type: 3}
+  m_PrefabInstance: {fileID: 1295943155}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &140063904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 140063901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e46470c0bc488504b8543596bba030e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _joystick: {fileID: 1210744938}
 --- !u!1 &147947886 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5103954987383861074, guid: 28bcb1907b6384d4da1a6e31b9d269be, type: 3}
@@ -1724,6 +1742,7 @@ MonoBehaviour:
   playerTransform: {fileID: 147947887}
   speed: 5
   _rotateSpeed: 2
+  isMoving: 0
 --- !u!1 &1293598033
 GameObject:
   m_ObjectHideFlags: 0
@@ -1891,6 +1910,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5103954987383861074, guid: 28bcb1907b6384d4da1a6e31b9d269be, type: 3}
       insertIndex: -1
       addedObject: {fileID: 147947889}
+    - targetCorrespondingSourceObject: {fileID: 1179832716302079356, guid: 28bcb1907b6384d4da1a6e31b9d269be, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 140063904}
   m_SourcePrefab: {fileID: 100100000, guid: 28bcb1907b6384d4da1a6e31b9d269be, type: 3}
 --- !u!1 &1498072938
 GameObject:
