@@ -1,14 +1,16 @@
 
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerDownHandler
 {
     [SerializeField]private Image joystickBackground; // Фон джойстика
     [SerializeField]private Image joystickHandle; // Перемещающаяся часть джойстика
-    [SerializeField]private GameObject player; // Ссылка на объект, который нужно перемещать
+    [SerializeField]private Transform playerTransform; // Ссылка на объект, который нужно перемещать
     [SerializeField]private float speed = 5f; // Скорость движения персонажа
+    [SerializeField] private float _rotateSpeed = 5f;
 
     private Vector2 inputDirection; // Направление движения
     private Vector2 touchPos; // Позиция касания
@@ -18,7 +20,12 @@ public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, I
     {
         // Перемещение игрока на основе ввода джойстика
         Vector3 movement = new Vector3(inputDirection.x, 0.0f, inputDirection.y);
-        player.transform.Translate(movement * speed * Time.deltaTime, Space.World);
+        playerTransform.Translate(movement * speed * Time.deltaTime, Space.World);
+        if (Vector3.Angle(playerTransform.forward,inputDirection)>0)
+        {
+            Vector3 newDirection = Vector3.RotateTowards(playerTransform.forward, new Vector3(inputDirection.x,0,inputDirection.y), _rotateSpeed*Time.deltaTime, 90);
+            playerTransform.rotation=Quaternion.LookRotation(newDirection);
+        }
     }
 
     public void OnDrag(PointerEventData eventData)
